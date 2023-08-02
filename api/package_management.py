@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from pydantic import BaseModel
 import api.models as models
 from api.helper import make_response
 from api.schema import Package
@@ -27,6 +26,8 @@ class PackageManagementClass(object):
             return self.create(event.pathParameters.package_id, event.body)
         elif "DELETE /package_management/packages/" in event.routeKey:
             return self.delete_package(event.pathParameters.package_id)
+        elif "PUT /package_management/packages/" in event.routeKey:
+            return self.set_status(event.pathParameters.package_id, event.pathParameters.status)
         else:
             print("None Matched for", event.routeKey)
 
@@ -50,31 +51,15 @@ class PackageManagementClass(object):
         else:
             return make_response(424, '{"error": "DB Failure"}')
 
-#@app.put("/packages/",response_model=Package)
-async def update(package: Package):
-    if model.update(package.id, package.json()):
-        return package
-    else:
-        return raise_http(424, "DB failure")
-
-#@app.delete("/packages/{id}")
-def delete_package(id: int):
-    if model.delete(id):
-        return {"message": "Packaged removed"}
-    else:
-        return raise_http(424, "DB failure")
-
-#@app.put("/packages/{id}/{status}")
-async def set_status(id:int, status:str):
-    package = model.get(id)
-    package.prev_status = package.curr_status
-    package.curr_status = status
-    if model.update(id, package.json()):
-        sns_wrapper.publish_message("status_notification_channel",package.curr_status,{"timestamp":datetime.now().strftime("%m/%d/%Y, %H:%M:%S")})
-        return package, 200
-    else:
-        return raise_http(404, "Package not found")
-
+    def set_status(self, package_id, status):
+        package = self.model.get(package_id)
+        package.prev_status = package.curr_status
+        package.curr_status = status
+        if self.model.update(package_id, package.json()):
+            sns_wrapper.publish_message("status_notification_channel",package.curr_status,{"timestamp":datetime.now().strftime("%m/%d/%Y, %H:%M:%S")})
+            return make_response(201, package.json())
+        else:
+            return make_response(404, '{"error": "Package not found"}')
 
 
 

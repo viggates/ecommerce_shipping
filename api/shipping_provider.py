@@ -1,4 +1,3 @@
-from pydantic import BaseModel
 import redis
 import api.models as models
 from api.helper import make_response
