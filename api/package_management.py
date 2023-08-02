@@ -3,6 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel
 import api.models as models
 from api.helper import make_response
+from api.schema import Package
 import boto3
 
 from api.sns import SnsWrapper
@@ -14,16 +15,6 @@ sns_wrapper=SnsWrapper(sns_res)
 
 packages=[]
 subscribers=[]
-
-class Package(BaseModel):
-    id:int
-    name:str
-    email:str
-    curr_status:str
-    prev_status:str
-
-#app = FastAPI()
-#model = models.Models(Package)
 
 class PackageManagementClass(object):
 

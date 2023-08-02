@@ -2,15 +2,7 @@ from pydantic import BaseModel
 import redis
 import api.models as models
 from api.helper import make_response
-
-class ShippingProvider(BaseModel):
-    id: int
-    name: str
-    address: str
-    phone: str
-
-#app = FastAPI()
-#model = models.Models(ShippingProvider)
+from api.schema import ShippingProvider
 
 class ShippingProviderClass(object):
 
@@ -51,5 +43,3 @@ def simulate_package_movementr(package_id: int):
     pass
 
 
-#if __name__ == "__main__":
-#    uvicorn.run(app, host="0.0.0.0", port=30000)
