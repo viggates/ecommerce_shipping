@@ -9,6 +9,10 @@ Install serverless
 
 npm i -g serverless
 
+References
+==========
+1. https://www.sentinelone.com/blog/aws-lambda-with-python/?utm_source=gdn-paid&utm_medium=paid-display&utm_campaign=cloud-launch-ppc&utm_term=&campaign_id=20183238684&ad_id=&gclid=CjwKCAjwq4imBhBQEiwA9Nx1BrtfQmSzYr_SutptrO0oeEs3mD9PCqymzTqNbKdcIbCNn-k8Wh9XohoCBM4QAvD_BwE
+2. https://www.serverless.com/blog/serverless-python-packaging/
 
 Assumptions
 ===========
